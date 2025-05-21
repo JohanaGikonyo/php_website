@@ -34,23 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
         $_SESSION['list_tasks'][$time] = $task;
         echo "<ul>";
         foreach ($_SESSION['list_tasks'] as $time => $task) {
-            echo "<li>In the <strong>{$time}</strong> You have to  <strong>$task</strong></li>";
+            echo "<li>In the <strong>{$time}</strong> You have to  <strong>$task</strong> <a href='?delete={$time}' onClick=\"return confirm('Are you sure you want to delete this task?');\">❌</a></li>";
         }
         echo "</ul>";
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    if ($_SESSION['list_tasks'] === null || $task === "" || $time === "") {
-        echo "<strong>Please enter a task and time </strong>";
-    } else {
-        unset($_SESSION['list_tasks'][$time]);
-        echo "<ul>";
-        foreach ($_SESSION['list_tasks'] as $time => $task) {
-            echo "<li>In the <strong>{$time}</strong> You have to  <strong>$task</strong></li>";
-        }
-        echo "</ul>";
-    }
+if (isset($_GET['delete'])) {
+    unset($_SESSION['list_tasks'][$_GET['delete']]);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear'])) {
     $_SESSION['list_tasks'] = array();
